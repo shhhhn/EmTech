@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
-import { View, TextInput, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { View, TextInput, TouchableOpacity, Text, StyleSheet, Pressable } from 'react-native';
+
 
 function GoalInput(props) {
-    const [enteredGoalText, setEnteredGoalText] = useState(''); 
+    const [enteredGoalText, setEnteredGoalText] = useState('');
+    const [pressState, setPressState] = useState('');
+    
     function goalInputHandler(enteredText) {
         setEnteredGoalText(enteredText); 
     }
 
     function addGoalHandler() {
+        setPressState('Goal Added!');
         props.onAddGoal(enteredGoalText); 
         setEnteredGoalText(''); 
     }
@@ -20,12 +24,71 @@ function GoalInput(props) {
                 onChangeText={goalInputHandler} 
                 value={enteredGoalText} 
             />
-            <TouchableOpacity 
+            {/*
+            <TouchableOpacity
                 style={styles.addButton} 
                 onPress={addGoalHandler} 
             >
                 <Text style={styles.addButtonText}>Add Goal</Text>
             </TouchableOpacity>
+            */}
+
+            
+            <Pressable onPress={() => addGoalHandler('onPress')}>
+                <Text style={styles.addButtonText}>Add Goal</Text>
+            </Pressable>
+            
+
+            {/*
+            <Pressable onPressIn={() => addGoalHandler('onPressIn')}>
+                <Text style={styles.addButtonText}>Add Goal</Text>
+            </Pressable>
+            */}
+
+            {/*
+            <Pressable onPressOut={() => addGoalHandler('onPressOut')}>
+                <Text style={styles.addButtonText}>Add Goal</Text>
+            </Pressable>
+            */}
+
+            {/*
+            <Pressable onLongPress={() => addGoalHandler('onLongPress')}>
+                <Text style={styles.addButtonText}>Add Goal</Text>
+            </Pressable>
+            */}
+
+            {/*
+            <Pressable 
+                style={({ pressed }) => [
+                    {
+                        backgroundColor: pressed ? 'gray' : 'black',
+                    },
+                    { padding: 10, borderRadius: 5 }
+                ]}
+                onPress={() => addGoalHandler('Dynamic')}>
+
+                <Text style={styles.addButtonText}>Add Goal</Text>
+            </Pressable>
+            */}
+
+            {/*
+            <Pressable 
+                onPress={() => addGoalHandler('HitSlop')}
+                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+            >
+                <Text style={styles.addButtonText}>Add Goal</Text>
+            </Pressable>
+            */}
+
+            {/*
+            <Pressable 
+                onPress={() => addGoalHandler('Ripple')}
+                android_ripple={{ color: 'lightblue', borderless: true }}
+            >
+                <Text style={styles.addButtonText}>Add Goal</Text>
+            </Pressable>
+            */}
+
         </View>
     );
 }
@@ -52,16 +115,20 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
     },
 
+    addButtonText: {
+        color: 'white',
+        fontSize: 16,
+        textAlign: 'center',
+        padding: 10,
+        backgroundColor: 'black',
+        borderRadius: 5,
+    },
+
     addButton: {
         backgroundColor: 'black',
         paddingVertical: 10,
         paddingHorizontal: 20,
         borderRadius: 5,
     },
-    
-    addButtonText: {
-        color: 'white',
-        fontSize: 16,
-        textAlign: 'center',
-    },
+
 });
