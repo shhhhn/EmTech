@@ -1,18 +1,50 @@
-import { StyleSheet, Text, View, ImageBackground, KeyboardAvoidingView, Platform, FlatList, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, KeyboardAvoidingView, Platform, FlatList, ScrollView, Button, Alert } from 'react-native';
 import React, { useState } from 'react';
 import GoalItem from './components/GoalItem';
 import GoalInput from './components/GoalInput';
 import ClearInput from './components/ClearInput';
+import Modal from './components/Modal';
 
 export default function App() {
   const [courseGoals, setCourseGoals] = useState([]);
+  const [isWarningModalVisible, setWarningModalVisible] = useState(false);
+  const [isConfirmModalVisible, setConfirmModalVisible] = useState(false);
+  const [goalToDelete, setGoalToDelete] = useState(null);
+
+  const openWarningModal = () => setWarningModalVisible(true);
+  const closeWarningModal = () => setWarningModalVisible(false);
+
+  const openConfirmModal = (goalKey) => {
+    setGoalToDelete(goalKey);
+    setConfirmModalVisible(true);
+};
+const closeConfirmModal = () => setConfirmModalVisible(false);
 
   function addGoalHandler(enteredGoalText) {
-    setCourseGoals((currentCourseGoals) => 
-      [...currentCourseGoals, 
-      { text: enteredGoalText, key: Math.random().toString() },
-    ]);
-  }
+    setCourseGoals((currentCourseGoals) => {
+        const updatedGoals = [...currentCourseGoals, { text: enteredGoalText, key: Math.random().toString() }];
+        if (updatedGoals.length > 5) {
+            setWarningModalVisible(true);
+        }
+        return updatedGoals;
+    });
+}
+
+
+function deleteGoalHandler(goalKey) {
+    Alert.alert(
+        "Confirm Deletion",
+        "Are you sure you want to delete this goal?",
+        [
+            { text: "Cancel", style: "cancel" },
+            { text: "OK", onPress: () => {
+                setCourseGoals((currentCourseGoals) =>
+                    currentCourseGoals.filter((goal) => goal.key !== goalKey)
+                );
+            } }
+        ]
+    );
+}
 
   function clearGoalsHandler() {
     setCourseGoals([]); // Clear the array
@@ -49,7 +81,12 @@ export default function App() {
           <View style={styles.goalsShade}>
             <FlatList
               data={courseGoals}
-              renderItem={({ item }) => <GoalItem text={item.text} />}
+              renderItem={({ item }) => (
+                <GoalItem
+                  text={item.text}
+                  onDelete={() => deleteGoalHandler(item.key)}
+                />
+              )}
               keyExtractor={(item) => item.key}
             />
           </View>
@@ -57,6 +94,24 @@ export default function App() {
           <View style={styles.clearButtonContainer}>
             <ClearInput onPress={clearGoalsHandler} />
           </View>
+
+          {/* Warning Modal */}
+          <Modal
+            visible={isWarningModalVisible}
+            title="Warning"
+            message="You have added more than 5 goals. Consider reducing your list!"
+            onClose={closeWarningModal}
+          />
+
+          {/* Confirmation Modal */}
+          <Modal
+            visible={isConfirmModalVisible}
+            title="Confirm Deletion"
+            message="Are you sure you want to delete this goal?"
+            onRequestClose={closeConfirmModal}
+            onConfirm={deleteGoalHandler}
+          />
+
         </View>
       </KeyboardAvoidingView>
     </ImageBackground>

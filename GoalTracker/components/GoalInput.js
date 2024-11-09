@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { View, TextInput, TouchableOpacity, Text, StyleSheet, Pressable } from 'react-native';
-
+import { View, TextInput, TouchableOpacity, Text, StyleSheet, Pressable, Alert } from 'react-native';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 function GoalInput(props) {
     const [enteredGoalText, setEnteredGoalText] = useState('');
@@ -16,14 +16,26 @@ function GoalInput(props) {
         setEnteredGoalText(''); 
     }
 
+    function handleUserIconPress() {
+        Alert.alert("Welcome!", "If the plan doesn't work, change the plan, not the goal.", [{ text: "OK" }]);
+    }
+
     return (
         <View style={styles.inputContainer}>
+            <MaterialIcons 
+                name="assignment-ind" 
+                size={30} 
+                color="gray" 
+                style={styles.icon} 
+                onPress={handleUserIconPress} 
+            />
             <TextInput
                 placeholder="Your Course Goal"
                 style={styles.textInput}
-                onChangeText={goalInputHandler} 
-                value={enteredGoalText} 
+                onChangeText={goalInputHandler}
+                value={enteredGoalText}
             />
+
             {/*
             <TouchableOpacity
                 style={styles.addButton} 
@@ -130,5 +142,10 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         borderRadius: 5,
     },
+
+    icon: {
+        marginRight: 2,
+        marginLeft: -12,
+      },
 
 });
