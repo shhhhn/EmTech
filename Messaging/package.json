@@ -12,8 +12,12 @@
     "@react-native-community/netinfo": "^11.4.1",
     "expo": "~52.0.9",
     "expo-status-bar": "~2.0.0",
+    "prop-types": "^15.8.1",
     "react": "18.3.1",
-    "react-native": "0.76.2"
+    "react-native": "0.76.2",
+    "react-native-context-menu-view": "^1.16.0",
+    "react-native-maps": "^1.20.1",
+    "react-native-web": "^0.19.13"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
